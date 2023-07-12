@@ -1,0 +1,5 @@
+.popup_opened {
+    visibility: visible; /*ниже, свойства, овтечающие за плавность открытия и закрытия модальных окон*/
+    opacity: 1;
+    transition-delay: 0s 0s;
+}

@@ -1,0 +1,8 @@
+/* необходимо, чтобы поле подчёркивалось красным только после нажатия на поле ввода */
+.popup__input_type_error {
+    border-bottom: 1px solid #FF0000;
+}
+
+.popup__input_type_error:focus {
+    outline: #FF0000 1px solid; 
+}

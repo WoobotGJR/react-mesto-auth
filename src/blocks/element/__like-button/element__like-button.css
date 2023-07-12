@@ -1,0 +1,15 @@
+.element__like-button {
+    align-self: center;
+    background-color: transparent; /*из за тега button появляется фоновый цвет*/
+    padding: 0; /*из за тега button появляется внутренний отступ*/
+    border: none; /*из за тега button появляется граница*/
+    cursor: pointer; /*поведение курсора при наведении*/
+    transition: opacity 0.3s ease-in-out;
+    width: 22px;
+    height: 19px;
+    background-image: url("../../../images/LikeButton.svg");
+}
+
+.element__like-button:hover {
+    opacity: 0.5;
+}

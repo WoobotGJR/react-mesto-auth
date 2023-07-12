@@ -1,0 +1,28 @@
+.auth-field__input {
+  margin: 0 0 30px 0;
+  border: none;
+  background-color: black;
+  border-bottom: 2px #cccccc solid;
+  padding: 0 0 8px 0;
+  color: rgba(204, 204, 204, 1);
+  line-height: 17px;
+  font-size: 14px;
+  font-weight: 400;
+  outline: none;
+  width: 100%;
+}
+.auth-field__input:last-of-type {
+  margin-bottom: 216px;
+}
+
+.auth-field__input:focus {
+  border-bottom: 2px solid royalblue;
+}
+
+.auth-field__input:invalid:focus {
+  border-bottom: 2px red solid;
+}
+
+.auth-field__input:valid:focus {
+  border-bottom: 2px solid royalblue;
+}

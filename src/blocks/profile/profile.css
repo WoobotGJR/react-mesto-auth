@@ -1,0 +1,28 @@
+.profile {
+    max-width: calc(100% - 400px);
+    margin: 0 auto 51px auto;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+	font-family: "Inter", "Arial", "Helvetica", sans-serif;
+}
+
+@media screen and (max-width: 1024px) {
+    .profile {
+        max-width: calc(100% - 200px);
+    }
+}
+
+@media screen and (max-width: 852px) {
+    .profile {
+        max-width: calc(100% - 100px);
+    }
+}
+
+@media screen and (max-width: 670px) {
+    .profile {
+        max-width: calc(100% - 38px);
+        flex-direction: column;
+        margin-bottom: 36px;
+    }
+}
