@@ -1,9 +1,0 @@
-.register-field__redirect-link {
-  margin-left: 6px;
-  text-decoration: none;
-  transition: opacity 0.3s ease-in-out;
-}
-
-.register-field__redirect-link:hover {
-  opacity: 0.6;
-}
