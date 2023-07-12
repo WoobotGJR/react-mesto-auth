@@ -1,0 +1,31 @@
+.elements {
+    display: grid;
+    font-family: "Inter", "Arial", "Helvetica", sans-serif;
+    min-height: 358px; /*базовая высота блока, необходима, чтобы вёрстка выглядела нормально при отсутствии карточек*/
+    max-width: calc(100% - 400px);
+    margin: 0 auto 66px auto;
+    grid-template-columns: repeat(auto-fit, 282px);
+    row-gap: 20px;
+    column-gap: 17px;
+    position: relative;
+    justify-content: center;
+}
+
+@media screen and (max-width: 1024px) {
+    .elements {
+        max-width: calc(100% - 200px);
+    }
+}
+
+@media screen and (max-width: 852px) {
+    .elements {
+        max-width: calc(100% - 100px);
+    }
+}
+
+@media screen and (max-width: 670px) {
+    .elements {
+        max-width: calc(100% - 38px);
+        margin-bottom: 48px;
+    }
+}

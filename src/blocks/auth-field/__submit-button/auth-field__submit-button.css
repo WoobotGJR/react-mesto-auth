@@ -1,0 +1,18 @@
+.auth-field__submit-button {
+  height: 50px;
+  border-radius: 2px;
+  border: none;
+  transition-property: opacity;
+  transition-duration: 0.5s;
+  font-weight: 400;
+  font-size: 18px;
+  line-height: 22px;
+  width: 100%;
+  transition-property: opacity;
+  transition-duration: 0.5s;
+  cursor: pointer;
+}
+
+.auth-field__submit-button:hover {
+  opacity: 0.7;
+}

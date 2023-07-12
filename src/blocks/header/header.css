@@ -1,0 +1,32 @@
+.header {
+  font-family: "Inter", "Arial", "Helvetica", sans-serif;
+  font-size: 18px;
+  line-height: 22px;
+  font-weight: 400;
+  color: #fff;
+  display: flex;
+  justify-content: space-between;
+  max-width: calc(100% - 400px);
+  margin: 43px auto 40px auto;
+  border-bottom: 1px solid rgba(84, 84, 84, 0.7); /*цвет указан в rgba для более удобной настройки прозрачности, соответствует #545454 в hex*/
+}
+
+@media screen and (max-width: 1024px) {
+  .header {
+    max-width: calc(100% - 200px);
+  }
+}
+
+@media screen and (max-width: 852px) {
+  .header {
+    max-width: calc(100% - 100px);
+  }
+}
+
+@media screen and (max-width: 670px) {
+  .header {
+    max-width: 100%;
+    flex-direction: column;
+    margin: 0 0 42px 0;
+  }
+}

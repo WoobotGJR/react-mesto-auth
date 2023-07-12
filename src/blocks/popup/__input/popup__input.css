@@ -1,0 +1,29 @@
+.popup__input {
+  margin: 0 0 30px 0;
+  border: none;
+  border-bottom: 1px solid rgba(0, 0, 0, 0.2);
+  padding: 0 0 10px 0;
+  box-sizing: border-box;
+  font-style: normal;
+  font-weight: 400;
+  font-size: 14px;
+  line-height: 17px;
+  width: 100%;
+}
+
+.popup__input:first-of-type {
+  margin-top: 21px;
+}
+
+.popup__input:focus {
+  outline: 1px solid royalblue;
+}
+
+.popup__input:invalid:focus {
+  outline: 1px red solid;
+  border-bottom: 1px transparent solid;
+}
+
+.popup__input:valid:focus {
+  outline: 1px solid royalblue;
+}

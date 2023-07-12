@@ -1,0 +1,15 @@
+.register-field__submit-button {
+  width: 100%;
+  height: 50px;
+  border-radius: 2px;
+  border: none;
+  font-weight: 400;
+  font-size: 18px;
+  line-height: 22px;
+  transition: opacity 0.3s ease-in-out;
+  cursor: pointer;
+}
+
+.register-field__submit-button:hover {
+  opacity: 0.6;
+}

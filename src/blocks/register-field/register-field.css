@@ -1,0 +1,8 @@
+.register-field {
+  margin: 60px auto 230px auto;
+  display: flex;
+  flex-direction: column;
+  width: 358px;
+  color: #fff;
+  font-family: "inter", "Arial", "Helvetica", sans-serif;
+}

@@ -1,0 +1,8 @@
+.header__navigation {
+  transition: opacity 0.3s ease-in-out;
+  height: 22px;
+}
+
+.header__navigation:hover {
+  opacity: 0.6;
+}
