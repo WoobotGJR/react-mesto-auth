@@ -1,6 +1,6 @@
 class Auth {
   constructor() {
-    this.BASE_URL = "https://auth.nomoreparties.co";
+    this._baseUrl = "https://auth.nomoreparties.co";
   }
 
   _checkResponseStatus(res) {
@@ -11,8 +11,14 @@ class Auth {
     }
   }
 
+  _request(endpoint, options) {
+    return fetch(`${this._baseUrl}${endpoint}`, options).then(
+      this._checkResponseStatus
+    ); // при такой записи ответ от сервера будет записываться в аргументы функции _checkResponseStatus
+  }
+
   signUp(password, email) {
-    return fetch(`${this.BASE_URL}/signup`, {
+    return this._request("/signup", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
@@ -21,32 +27,38 @@ class Auth {
         password: password,
         email: email,
       }),
-    }).then((response) => {
-      return this._checkResponseStatus(response); // При использовании подобной проверки, в особенности, когда результат запроса используется или обрабатывается в другом компоненте, обязательно писать return
     });
+    // return fetch(`${this.BASE_URL}/signup`, { // фрагмент оставлен из за комментария
+    //   method: "POST",
+    //   headers: {
+    //     "Content-Type": "application/json",
+    //   },
+    //   body: JSON.stringify({
+    //     password: password,
+    //     email: email,
+    //   }),
+    // }).then((response) => {
+    //   return this._checkResponseStatus(response); // При использовании подобной проверки, в особенности, когда результат запроса используется или обрабатывается в другом компоненте, обязательно писать return
+    // });
   }
 
   signIn(email, password) {
-    return fetch(`${this.BASE_URL}/signin`, {
+    return this._request("/signin", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
       },
       body: JSON.stringify({ email: email, password: password }),
-    }).then((response) => {
-      return this._checkResponseStatus(response);
     });
   }
 
   checkToken(token) {
-    return fetch(`${this.BASE_URL}/users/me`, {
+    return this._request("/users/me", {
       method: "GET",
       headers: {
         "Content-Type": "application/json",
         Authorization: `Bearer ${token}`,
       },
-    }).then((response) => {
-      return this._checkResponseStatus(response);
     });
   }
 }

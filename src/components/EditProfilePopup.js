@@ -1,38 +1,33 @@
 import React from "react";
 import PopupWithForm from "./PopupWithForm";
 import { CurrentUserContext } from "../contexts/CurrentUserContext";
+import { useForm } from "../hooks/useForm";
 
 export default function EditProfilePopup(props) {
-  const [name, setName] = React.useState(null);
-  const [description, setDescription] = React.useState(null);
+  const { values, handleChange, setValues } = useForm({});
   const currentUser = React.useContext(CurrentUserContext);
 
   React.useEffect(() => {
-    setName(currentUser.name);
-    setDescription(currentUser.about);
+    setValues({
+      name: currentUser.name,
+      activity: currentUser.about,
+    });
   }, [currentUser, props.isOpen]); // При открытии модального окна могут остаться в полях формы несохраненные данные, которые могли остаться с прошлого открытия формы. Правильным поведением является подставлять данные в поля формы не только при изменении данных пользователя, но и при открытии модального окна, т.е. по изменению флага isOpen.
-
-  function handleNameInput(event) {
-    setName(event.target.value);
-    // console.log(name)
-  }
-
-  function handleDescriptionInput(event) {
-    setDescription(event.target.value);
-    // console.log(description)
-  }
 
   function handleSubmit(event) {
     event.preventDefault();
 
-    props.onUpdateUser({ newName: name, newDescription: description });
+    props.onUpdateUser({
+      newName: values.name,
+      newDescription: values.activity,
+    });
   }
 
   return (
     <PopupWithForm
       title="Редактировать профиль"
       name="profile-edit"
-      buttonText="Сохранить"
+      buttonText={props.isLoading ? "Сохранение..." : "Сохранить"}
       isOpened={props.isOpen}
       onClose={props.onClose}
       onSubmit={handleSubmit}
@@ -46,8 +41,8 @@ export default function EditProfilePopup(props) {
         required
         minLength="2"
         maxLength="40"
-        onChange={handleNameInput}
-        value={name || ""} // данные в стейте могут не прогрузиться и в полях ввода значения undefined
+        onChange={handleChange}
+        value={values.name || ""} // данные в стейте могут не прогрузиться и в полях ввода значения undefined
       />
       <span className="popup__input-error profile-name-input-error"></span>
       <input
@@ -59,8 +54,8 @@ export default function EditProfilePopup(props) {
         required
         minLength="2"
         maxLength="200"
-        onChange={handleDescriptionInput}
-        value={description || ""} // данные в стейте могут не прогрузиться и в полях ввода значения undefined
+        onChange={handleChange}
+        value={values.activity || ""} // данные в стейте могут не прогрузиться и в полях ввода значения undefined
       />
       <span className="popup__input-error activity-input-error"></span>
     </PopupWithForm>

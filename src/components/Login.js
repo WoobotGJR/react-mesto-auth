@@ -36,37 +36,35 @@ export default function Login(props) {
       });
   }
   return (
-    <>
-      <div className="auth-field">
-        <h1 className="auth-field__title">Авторизация</h1>
-        <form className="auth-field__form" onSubmit={handleSubmit}>
-          <input
-            className="auth-field__input"
-            id="auth-email-input"
-            type="email"
-            placeholder="Email"
-            name="email"
-            required
-            minLength="2"
-            maxLength="40"
-            value={formValue.email || ""}
-            onChange={handleChange}
-          ></input>
-          <input
-            className="auth-field__input"
-            id="auth-password-input"
-            type="password"
-            placeholder="Пароль"
-            name="password"
-            required
-            minLength="2"
-            maxLength="20"
-            value={formValue.password || ""}
-            onChange={handleChange}
-          ></input>
-          <button className="auth-field__submit-button">Войти</button>
-        </form>
-      </div>
-    </>
+    <div className="auth-field">
+      <h1 className="auth-field__title">Авторизация</h1>
+      <form className="auth-field__form" onSubmit={handleSubmit}>
+        <input
+          className="auth-field__input"
+          id="auth-email-input"
+          type="email"
+          placeholder="Email"
+          name="email"
+          required
+          minLength="2"
+          maxLength="40"
+          value={formValue.email || ""}
+          onChange={handleChange}
+        ></input>
+        <input
+          className="auth-field__input"
+          id="auth-password-input"
+          type="password"
+          placeholder="Пароль"
+          name="password"
+          required
+          minLength="2"
+          maxLength="20"
+          value={formValue.password || ""}
+          onChange={handleChange}
+        ></input>
+        <button className="auth-field__submit-button">Войти</button>
+      </form>
+    </div>
   );
 }

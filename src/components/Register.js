@@ -18,18 +18,18 @@ export default function Register(props) {
   function handleSubmit(event) {
     event.preventDefault();
 
-    auth.signUp(formValue.password, formValue.email).then(
-      (data) => {
+    auth
+      .signUp(formValue.password, formValue.email)
+      .then((data) => {
         props.setIsRegistrationSuccess(true);
         props.setRegisterPopupState(true);
         navigate("/sign-in", { replace: true });
-      },
-      (error) => {
+      })
+      .catch((error) => {
         props.setIsRegistrationSuccess(false);
         props.setRegisterPopupState(true);
         console.log(error);
-      }
-    );
+      });
   }
 
   function handleChange(event) {
@@ -44,49 +44,47 @@ export default function Register(props) {
   }
 
   return (
-    <>
-      <div className="register-field">
-        <h1 className="register-field__title">Регистрация</h1>
-        <form className="register-field__form" onSubmit={handleSubmit}>
-          <input
-            className="register-field__input"
-            id="register-email-input"
-            type="email"
-            placeholder="Email"
-            name="email"
-            required
-            minLength="2"
-            maxLength="40"
-            value={formValue.email || ""}
-            onChange={handleChange}
-          ></input>
-          <input
-            className="register-field__input"
-            id="register-password"
-            type="password"
-            placeholder="Пароль"
-            name="password"
-            required
-            minLength="2"
-            maxLength="20"
-            value={formValue.password || ""}
-            onChange={handleChange}
-          ></input>
-          <button className="register-field__submit-button">
-            Зарегистрироваться
-          </button>
-        </form>
-        <div className="register-field__redirect-link-container">
-          <p>Уже зарегистрированы?</p>
-          <Link
-            to="/sign-in"
-            style={style}
-            className="register-field__redirect-link"
-          >
-            Войти
-          </Link>
-        </div>
+    <div className="register-field">
+      <h1 className="register-field__title">Регистрация</h1>
+      <form className="register-field__form" onSubmit={handleSubmit}>
+        <input
+          className="register-field__input"
+          id="register-email-input"
+          type="email"
+          placeholder="Email"
+          name="email"
+          required
+          minLength="2"
+          maxLength="40"
+          value={formValue.email || ""}
+          onChange={handleChange}
+        ></input>
+        <input
+          className="register-field__input"
+          id="register-password"
+          type="password"
+          placeholder="Пароль"
+          name="password"
+          required
+          minLength="2"
+          maxLength="20"
+          value={formValue.password || ""}
+          onChange={handleChange}
+        ></input>
+        <button className="register-field__submit-button">
+          Зарегистрироваться
+        </button>
+      </form>
+      <div className="register-field__redirect-link-container">
+        <p>Уже зарегистрированы?</p>
+        <Link
+          to="/sign-in"
+          style={style}
+          className="register-field__redirect-link"
+        >
+          Войти
+        </Link>
       </div>
-    </>
+    </div>
   );
 }

@@ -1,24 +1,37 @@
 import React from "react";
+import { usePopupClose } from "../hooks/usePopupClose.js";
 
-class PopupWithForm extends React.Component {
-    constructor(props) {
-        super(props);
-    }
+function PopupWithForm(props) {
+  usePopupClose(props.isOpened, props.onClose);
 
-    render() {
-        return(
-            <div className={`popup popup_type_${this.props.name} ${this.props.isOpened ? "popup_opened" : ""}`}>
-                <div className="popup__container popup__container_type_edit">
-                    <button className="popup__close-button" type="button" onClick={this.props.onClose}></button>
-                    <h2 className="popup__title">{this.props.title}</h2>
-                    <form className="popup__form" action="#" name={`${this.props.name}-popup-form`} onSubmit={this.props.onSubmit} noValidate>
-                        {this.props.children}
-                        <button className="popup__submit-button" type="submit">{this.props.buttonText}</button>
-                    </form>
-                </div>
-            </div>
-        );
-    }
+  return (
+    <div
+      className={`popup popup_type_${props.name} ${
+        props.isOpened ? "popup_opened" : ""
+      }`}
+    >
+      <div className="popup__container popup__container_type_edit">
+        <button
+          className="popup__close-button"
+          type="button"
+          onClick={props.onClose}
+        />
+        <h2 className="popup__title">{props.title}</h2>
+        <form
+          className="popup__form"
+          action="#"
+          name={`${props.name}-popup-form`}
+          onSubmit={props.onSubmit}
+          // noValidate
+        >
+          {props.children}
+          <button className="popup__submit-button" type="submit">
+            {props.buttonText}
+          </button>
+        </form>
+      </div>
+    </div>
+  );
 }
 
-export default PopupWithForm
+export default PopupWithForm;

@@ -1,7 +1,10 @@
 import successImage from "../images/SuccessImage.png";
 import failImage from "../images/FailImage.png";
+import { usePopupClose } from "../hooks/usePopupClose";
 
 export default function InfoTooltip(props) {
+  usePopupClose(props.isOpened, props.onClose);
+
   return (
     <div
       className={`popup popup_type_${props.name} ${

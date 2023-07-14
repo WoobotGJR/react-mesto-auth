@@ -23,17 +23,14 @@ function App() {
   const [isEditAvatarPopupOpen, setEditAvatarPopupOpen] = React.useState(false);
   const [isRegistrationSuccessPopupOpen, setIsRegistrationSuccessPopupOpen] =
     React.useState(false);
-  const [selectedCard, setSelectedCard] = React.useState(null);
+  const [selectedCard, setSelectedCard] = React.useState("");
   const [cards, setCards] = React.useState([]);
   const [currentUser, setCurrentUser] = React.useState({}); // Установка значения null приводит к ошибкам, описывать весь объект с занулёнными значениями не самый лучший способ, поэтому был передан пустой объект
   const [loggedIn, setLoggedIn] = React.useState(false);
   const [isRegistrationSuccess, setIsRegistrationSuccess] =
     React.useState(false);
   const navigate = useNavigate();
-
-  // setInterval(() => {
-  //   console.log(`email - ${currentUser.email}`);
-  // }, 200);
+  const [isLoading, setIsLoading] = React.useState(false);
 
   React.useEffect(() => {
     api
@@ -65,7 +62,6 @@ function App() {
         .then((res) => {
           if (res) {
             setLoggedIn(true);
-            console.log(currentUser.email);
             navigate("/", { replace: true });
           }
         })
@@ -127,47 +123,47 @@ function App() {
     setEditProfilePopupOpen(false);
     setAddPlacePopupOpen(false);
     setIsRegistrationSuccessPopupOpen(false);
-    setSelectedCard(null);
+    setSelectedCard("");
   }
 
   function handleCardClick(card) {
     setSelectedCard(card);
   }
 
+  function handleSubmit(request) {
+    setIsLoading(true);
+    request()
+      .then(closeAllPopups)
+      .catch(console.error)
+      .finally(() => setIsLoading(false));
+  }
+
   function handleUpdateUser({ newName, newDescription }) {
-    api
-      .setUserInfo({ username: newName, userInfo: newDescription })
-      .then((res) => {
-        setCurrentUser(res); // Была ошибка, связанная с некорректной передачей новых данных (они передавались без поля _id)
-        closeAllPopups();
-      })
-      .catch((error) => {
-        console.log(`new info setting error - ${error}`);
-      });
+    function makeRequest() {
+      return api
+        .setUserInfo({ username: newName, userInfo: newDescription })
+        .then(setCurrentUser);
+    }
+
+    handleSubmit(makeRequest);
   }
 
   function handleUpdateAvatar({ newAvatar }) {
-    api
-      .setUserAvatar({ avatar: newAvatar })
-      .then((res) => {
-        setCurrentUser(res); // Была ошибка, связанная с некорректной передачей новых данных (они передавались без поля _id)
-        closeAllPopups();
-      })
-      .catch((error) => {
-        console.log(`new avatar setting error - ${error}`);
-      });
+    function makeRequest() {
+      return api.setUserAvatar({ avatar: newAvatar }).then(setCurrentUser);
+    }
+
+    handleSubmit(makeRequest);
   }
 
   function handleAddPlaceSubmit({ link, placeName }) {
-    api
-      .addUserCard({ link: link, name: placeName })
-      .then((res) => {
+    function makeRequest() {
+      return api.addUserCard({ link: link, name: placeName }).then((res) => {
         setCards([res, ...cards]);
-        setAddPlacePopupOpen(false); // Закрывать попапы нужно в блоке then запроса, после успешного обмена данными с сервером
-      })
-      .catch((error) => {
-        console.log(`new card setting error - ${error}`);
       });
+    }
+
+    handleSubmit(makeRequest);
   }
 
   function handleLogInState() {
@@ -223,19 +219,26 @@ function App() {
         isOpen={isEditProfilePopupOpen}
         onClose={closeAllPopups}
         onUpdateUser={handleUpdateUser}
+        isLoading={isLoading}
       />
       <AddPlacePopup
         isOpen={isAddPlacePopupOpen}
         onClose={closeAllPopups}
         handleSubmit={handleAddPlaceSubmit}
+        isLoading={isLoading}
       />
       <PopupWithForm title="Вы уверены?" name="card-delete" buttonText="Да" />
       <EditAvatarPopup
         isOpen={isEditAvatarPopupOpen}
         onClose={closeAllPopups}
         onUpdateAvatar={handleUpdateAvatar}
+        isLoading={isLoading}
       />
-      <ImagePopup card={selectedCard} onClose={closeAllPopups} />
+      <ImagePopup
+        card={selectedCard}
+        onClose={closeAllPopups}
+        isOpened={setSelectedCard}
+      />
       <InfoTooltip
         name="tooltip"
         onClose={closeAllPopups}
