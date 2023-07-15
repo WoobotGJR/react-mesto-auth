@@ -1,46 +1,34 @@
 import React from "react";
 import { Link, useNavigate } from "react-router-dom";
 import auth from "../utils/auth";
+import { useForm } from "../hooks/useForm";
 
 // на будущее, для props можно использовать деструктуризацию. Т.е. вместо props в фигурных скобках писать пропсы, которые сообщены компоненту
 export default function Register(props) {
+  const { values, handleChange } = useForm({});
   const style = {
     color: "#fff",
     textDecoration: "none",
   };
 
-  const [formValue, setFormValue] = React.useState({
-    email: "",
-    password: "",
-  });
   const navigate = useNavigate();
 
   function handleSubmit(event) {
     event.preventDefault();
 
     auth
-      .signUp(formValue.password, formValue.email)
+      .signUp(values.password, values.email)
       .then((data) => {
         props.setIsRegistrationSuccess(true);
-        props.setRegisterPopupState(true);
         navigate("/sign-in", { replace: true });
       })
       .catch((error) => {
         props.setIsRegistrationSuccess(false);
-        props.setRegisterPopupState(true);
         console.log(error);
+      })
+      .finally(() => {
+        props.setRegisterPopupState(true); // лучше поместить в блоке finally, чтобы не дублировать в then и catch.
       });
-  }
-
-  function handleChange(event) {
-    const { name, value } = event.target;
-
-    setFormValue({
-      ...formValue,
-      [name]: value,
-    });
-
-    // console.log(formValue);
   }
 
   return (
@@ -56,7 +44,7 @@ export default function Register(props) {
           required
           minLength="2"
           maxLength="40"
-          value={formValue.email || ""}
+          value={values.email || ""}
           onChange={handleChange}
         ></input>
         <input
@@ -68,7 +56,7 @@ export default function Register(props) {
           required
           minLength="2"
           maxLength="20"
-          value={formValue.password || ""}
+          value={values.password || ""}
           onChange={handleChange}
         ></input>
         <button className="register-field__submit-button">

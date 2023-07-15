@@ -10,7 +10,7 @@ function PopupWithForm(props) {
         props.isOpened ? "popup_opened" : ""
       }`}
     >
-      <div className="popup__container popup__container_type_edit">
+      <div className="popup__container popup__container_type_form">
         <button
           className="popup__close-button"
           type="button"

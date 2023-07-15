@@ -6,7 +6,7 @@ export default function AddPlacePopup(props) {
   const { values, handleChange, setValues } = useForm({});
 
   React.useEffect(() => {
-    setValues("");
+    setValues({}); // Была ошибка, связанная с тем, что для обнуления была передана строка, а не пустой объект
   }, [props.isOpen]); // Очищение полей при изменении стейта, отвечающего за появление модального окна
 
   function handleSubmit(event) {

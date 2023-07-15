@@ -24,35 +24,31 @@ function Card(props) {
   }
 
   return (
-    <div id="card-element">
-      <article className="element">
-        {isOwn && (
+    <article className="element">
+      {isOwn && (
+        <button
+          className="element__delete-button"
+          onClick={handleCardDelete}
+        ></button>
+      )}
+      <img
+        className="element__image"
+        src={props.card.link}
+        alt={props.card.name}
+        onClick={handleClick}
+      />
+      <div className="element__bottom-panel">
+        <h2 className="element__subtitle">{props.card.name}</h2>
+        <div className="element__like-container">
           <button
-            className="element__delete-button"
-            onClick={handleCardDelete}
+            className={cardLikeButtonClassName}
+            type="button"
+            onClick={handleLikeClick}
           ></button>
-        )}
-        <img
-          className="element__image"
-          src={props.card.link}
-          alt={props.card.name}
-          onClick={handleClick}
-        />
-        <div className="element__bottom-panel">
-          <h2 className="element__subtitle">{props.card.name}</h2>
-          <div className="element__like-container">
-            <button
-              className={cardLikeButtonClassName}
-              type="button"
-              onClick={handleLikeClick}
-            ></button>
-            <div className="element__like-counter">
-              {props.card.likes.length}
-            </div>
-          </div>
+          <div className="element__like-counter">{props.card.likes.length}</div>
         </div>
-      </article>
-    </div>
+      </div>
+    </article>
   );
 }
 
