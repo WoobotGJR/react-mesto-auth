@@ -1,11 +1,8 @@
 import React from "react";
-import { useNavigate } from "react-router-dom";
-import auth from "../utils/auth";
 import { useForm } from "../hooks/useForm";
 
 export default function Login(props) {
   const { values, handleChange } = useForm({});
-  const navigate = useNavigate();
 
   function handleSubmit(event) {
     event.preventDefault();

@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useCallback } from "react";
 import Header from "./Header.js";
 import Main from "./Main.js";
 import Footer from "./Footer.js";
@@ -32,33 +32,41 @@ function App() {
   const navigate = useNavigate();
   const [isLoading, setIsLoading] = React.useState(false);
 
+  const handleTokenCheck = useCallback(() => {
+    const token = localStorage.getItem("jwt");
+
+    if (token) {
+      auth
+        .checkToken(token)
+        .then((res) => {
+          setCurrentUser(res.data);
+          console.log(`checkToken - ${res.data._id}`);
+          setLoggedIn(true);
+          navigate("/", { replace: true });
+        })
+        .catch(console.log);
+    }
+  }, [navigate]);
+
+  React.useEffect(() => {
+    handleTokenCheck();
+  }, [handleTokenCheck]);
+
   React.useEffect(() => {
     if (loggedIn) {
       Promise.all([api.getUserInfo(), api.getInitialCards()])
         .then(([userInfo, initialCards]) => {
-          console.log(`getUserInfo returned id - ${userInfo.data._id}`);
+          console.log(`getUserInfo - ${userInfo.data._id}`);
           setCards([...initialCards.data].reverse());
-          setCurrentUser(userInfo.data)
+          setCurrentUser(userInfo.data);
         })
-        .catch(err => console.log(`Initital cards or initial user data loading error - ${err}`))
-      }
+        .catch((err) =>
+          console.log(
+            `Initital cards or initial user data loading error - ${err}`
+          )
+        );
+    }
   }, [loggedIn]);
-
-  const handleTokenCheck = () => {
-    auth
-      .checkToken()
-      .then((res) => {
-        if (res) {
-          setLoggedIn(true);
-          navigate("/", { replace: true });
-        }
-      })
-      .catch(console.log);
-  };
-
-  React.useEffect(() => {
-    handleTokenCheck();
-  }, []);
 
   function handleCardLike(card) {
     // Снова проверяем, есть ли уже лайк на этой карточке
@@ -115,6 +123,10 @@ function App() {
     setSelectedCard(card);
   }
 
+  function handleLogin() {
+    setLoggedIn(true);
+  }
+
   function handleSubmit(request) {
     setIsLoading(true);
     request()
@@ -128,7 +140,7 @@ function App() {
       return api
         .setUserInfo({ username: newName, userInfo: newDescription })
         .then((res) => {
-          setCurrentUser(res.data)
+          setCurrentUser(res.data);
         });
     }
 
@@ -137,11 +149,9 @@ function App() {
 
   function handleUpdateAvatar({ newAvatar }) {
     function makeRequest() {
-      return api
-        .setUserAvatar({ avatar: newAvatar })
-        .then((res) => {
-          setCurrentUser(res.data)
-        });
+      return api.setUserAvatar({ avatar: newAvatar }).then((res) => {
+        setCurrentUser(res.data);
+      });
     }
 
     handleSubmit(makeRequest);
@@ -164,20 +174,15 @@ function App() {
     navigate("/signin", { replace: true });
   }
 
-  function handleLogIn(email, password) {
+  function handleAuth(email, password) {
     auth
       .signIn(email, password)
       .then((data) => {
-        localStorage.setItem('email', email);
-        setLoggedIn(true);
-
-        auth.checkToken(data)
-          .then((res) => {
-            handleLogIn();
-            navigate("/", { replace: true });
-            console.log(`checkToken returned id - ${res.data._id}`);
-          })
-          .catch(console.log);
+        if (data) {
+          localStorage.setItem("email", email);
+          handleLogin();
+          navigate("/", { replace: true });
+        }
       })
       .catch((err) => {
         console.log(err);
@@ -216,7 +221,7 @@ function App() {
           />
           <Route
             path="/signin"
-            element={<Login handleLogIn={handleLogIn} />}
+            element={<Login handleLogIn={handleAuth} />}
           ></Route>
           <Route path="*" element={<Navigate to="/signin" replace />}></Route>
         </Routes>

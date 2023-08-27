@@ -5,6 +5,7 @@ class Auth {
 
   _checkResponseStatus(res) {
     if (res.ok) {
+      // console.log(res.json());
       return res.json();
     } else {
       return Promise.reject(`Error: ${res.status}`);
@@ -33,23 +34,23 @@ class Auth {
   signIn(email, password) {
     return this._request("/signin", {
       method: "POST",
-      credentials: 'include',
+      credentials: "include",
       headers: {
         "Content-Type": "application/json",
       },
       body: JSON.stringify({ email: email, password: password }),
-    })
-    .then(data => { // https://hasura.io/blog/best-practices-of-using-jwt-with-graphql/#basics-client-setup
+    }).then((data) => {
+      // https://hasura.io/blog/best-practices-of-using-jwt-with-graphql/#basics-client-setup
       if (data) {
-        localStorage.setItem('jwt', data.token);
+        localStorage.setItem("jwt", data.token);
         return data.token;
-      };
-    })
+      }
+    });
   }
 
   checkToken(token) {
     return this._request("/users/me", {
-      credentials: 'include',
+      credentials: "include",
       method: "GET",
       headers: {
         "Content-Type": "application/json",
@@ -57,6 +58,22 @@ class Auth {
       },
     });
   }
+  // checkToken(token) {
+  //   return fetch(`${this._baseUrl}/users/me`, {
+  //     headers: {
+  //       "Content-Type": "application/json",
+  //       Authorization: `Bearer ${token}`,
+  //     },
+  //   })
+  //     .then((res) => {
+  //       console.log(res);
+  //       this._checkResponseStatus(res);
+  //     })
+  //     .then((data) => {
+  //       console.log(data);
+  //       return data;
+  //     });
+  // }
 }
 
 const auth = new Auth();
