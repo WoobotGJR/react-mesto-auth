@@ -9,19 +9,11 @@ export default function Login(props) {
 
   function handleSubmit(event) {
     event.preventDefault();
+    console.log(values.email, values.password);
 
-    auth
-      .signIn(values.email, values.password)
-      .then((data) => {
-        localStorage.setItem("jwt", data.token);
-        localStorage.setItem("email", values.email);
-        props.handleLogInState();
-        navigate("/", { replace: true });
-      })
-      .catch((err) => {
-        console.log(err);
-      });
+    props.handleLogIn(values.email, values.password)
   }
+
   return (
     <div className="auth-field">
       <h1 className="auth-field__title">Авторизация</h1>

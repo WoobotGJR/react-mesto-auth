@@ -1,6 +1,6 @@
 class Auth {
   constructor() {
-    this._baseUrl = "https://auth.nomoreparties.co";
+    this._baseUrl = "http://localhost:3000";
   }
 
   _checkResponseStatus(res) {
@@ -28,32 +28,28 @@ class Auth {
         email: email,
       }),
     });
-    // return fetch(`${this.BASE_URL}/signup`, { // фрагмент оставлен из за комментария
-    //   method: "POST",
-    //   headers: {
-    //     "Content-Type": "application/json",
-    //   },
-    //   body: JSON.stringify({
-    //     password: password,
-    //     email: email,
-    //   }),
-    // }).then((response) => {
-    //   return this._checkResponseStatus(response); // При использовании подобной проверки, в особенности, когда результат запроса используется или обрабатывается в другом компоненте, обязательно писать return
-    // });
   }
 
   signIn(email, password) {
     return this._request("/signin", {
       method: "POST",
+      credentials: 'include',
       headers: {
         "Content-Type": "application/json",
       },
       body: JSON.stringify({ email: email, password: password }),
-    });
+    })
+    .then(data => { // https://hasura.io/blog/best-practices-of-using-jwt-with-graphql/#basics-client-setup
+      if (data) {
+        localStorage.setItem('jwt', data.token);
+        return data.token;
+      };
+    })
   }
 
   checkToken(token) {
     return this._request("/users/me", {
+      credentials: 'include',
       method: "GET",
       headers: {
         "Content-Type": "application/json",

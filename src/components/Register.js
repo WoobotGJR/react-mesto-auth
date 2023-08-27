@@ -20,7 +20,7 @@ export default function Register(props) {
       .signUp(values.password, values.email)
       .then((data) => {
         props.setIsRegistrationSuccess(true);
-        navigate("/sign-in", { replace: true });
+        navigate("/signin", { replace: true });
       })
       .catch((error) => {
         props.setIsRegistrationSuccess(false);

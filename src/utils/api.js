@@ -13,9 +13,8 @@ class Api {
   }
 
   _request(endpoint, options) {
-    return fetch(`${this._baseUrl}${endpoint}`, options).then(
-      this._checkResponseStatus
-    ); // при такой записи ответ от сервера будет записываться в аргументы функции _checkResponseStatus
+    return fetch(`${this._baseUrl}${endpoint}`, options)
+      .then(this._checkResponseStatus); // при такой записи ответ от сервера будет записываться в аргументы функции _checkResponseStatus
   }
 
   getInitialCards() {
@@ -86,10 +85,12 @@ class Api {
   }
 }
 
+// https://developer.mozilla.org/en-US/docs/Web/API/Request/credentials
 const api = new Api({
-  baseUrl: "https://mesto.nomoreparties.co/v1/cohort-66",
+  baseUrl: "http://localhost:3000",
+  credentials: 'include',
   headers: {
-    authorization: "5543044c-fd15-4f3f-9950-66b2e3519db9",
+    Authorization: `Bearer ${localStorage.jwt}`,
     "Content-Type": "application/json",
   },
 });

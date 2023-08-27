@@ -19,16 +19,16 @@ function Header(props) {
   return (
     <header className="header">
       <img className="header__logo" src={siteLogo} alt="Логотип сайта" />
-      {location.pathname === "/sign-up" && (
+      {location.pathname === "/signup" && (
         <div className="header__container">
-          <NavLink className="header__navigation" style={style} to="/sign-in">
+          <NavLink className="header__navigation" style={style} to="/signin">
             Войти
           </NavLink>
         </div>
       )}
-      {location.pathname === "/sign-in" && (
+      {location.pathname === "/signin" && (
         <div className="header__container">
-          <NavLink className="header__navigation" style={style} to="/sign-up">
+          <NavLink className="header__navigation" style={style} to="/signup">
             Регистрация
           </NavLink>
         </div>
@@ -41,7 +41,7 @@ function Header(props) {
           <NavLink
             className="header__navigation"
             style={exitButtonStyle}
-            to="/sign-in"
+            to="/signin"
             onClick={props.onLogOut}
           >
             Выйти

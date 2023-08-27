@@ -3,9 +3,9 @@ import { CurrentUserContext } from "../contexts/CurrentUserContext.js";
 
 function Card(props) {
   const currentUser = React.useContext(CurrentUserContext);
-  const isOwn = props.card.owner._id === currentUser._id;
+  const isOwn = props.card.owner === currentUser._id;
   const isLiked = props.card.likes.some(
-    (listId) => listId._id === currentUser._id
+    (id) => id === currentUser._id
   );
   const cardLikeButtonClassName = `element__like-button ${
     isLiked && "element__like-button_active"
@@ -13,6 +13,7 @@ function Card(props) {
 
   function handleClick() {
     props.onCardClick(props.card);
+    console.log(props.card.owner, currentUser._id);
   }
 
   function handleLikeClick() {

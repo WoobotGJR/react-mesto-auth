@@ -10,7 +10,7 @@ export default function AddPlacePopup(props) {
   }, [props.isOpen]); // Очищение полей при изменении стейта, отвечающего за появление модального окна
 
   function handleSubmit(event) {
-    event.preventDefault();
+    event.preventDefault(); 
 
     props.handleSubmit({ link: values.link, placeName: values.name });
   }

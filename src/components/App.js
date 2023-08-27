@@ -33,42 +33,27 @@ function App() {
   const [isLoading, setIsLoading] = React.useState(false);
 
   React.useEffect(() => {
-    api
-      .getUserInfo()
-      .then((userInfo) => {
-        setCurrentUser(userInfo);
-      })
-      .catch((error) => {
-        console.log(`Initial user info loading error - ${error}`);
-      });
-  }, []);
-
-  React.useEffect(() => {
-    api
-      .getInitialCards()
-      .then((initialCards) => {
-        setCards([...initialCards]);
-      })
-      .catch((error) => {
-        console.log(`Initial cards loading error - ${error}`);
-      });
-  }, []);
+    if (loggedIn) {
+      Promise.all([api.getUserInfo(), api.getInitialCards()])
+        .then(([userInfo, initialCards]) => {
+          console.log(`getUserInfo returned id - ${userInfo.data._id}`);
+          setCards([...initialCards.data].reverse());
+          setCurrentUser(userInfo.data)
+        })
+        .catch(err => console.log(`Initital cards or initial user data loading error - ${err}`))
+      }
+  }, [loggedIn]);
 
   const handleTokenCheck = () => {
-    if (localStorage.getItem("jwt")) {
-      const jwtToken = localStorage.getItem("jwt");
-      auth
-        .checkToken(jwtToken)
-        .then((res) => {
-          if (res) {
-            setLoggedIn(true);
-            navigate("/", { replace: true });
-          }
-        })
-        .catch((err) => {
-          console.log(err);
-        });
-    }
+    auth
+      .checkToken()
+      .then((res) => {
+        if (res) {
+          setLoggedIn(true);
+          navigate("/", { replace: true });
+        }
+      })
+      .catch(console.log);
   };
 
   React.useEffect(() => {
@@ -77,14 +62,14 @@ function App() {
 
   function handleCardLike(card) {
     // Снова проверяем, есть ли уже лайк на этой карточке
-    const isLiked = card.likes.some((i) => i._id === currentUser._id);
+    const isLiked = card.likes.some((id) => id === currentUser._id);
 
     // Отправляем запрос в API и получаем обновлённые данные карточки
     api
       .changeLikeCardStatus(card._id, !isLiked)
       .then((newCard) => {
         setCards((state) =>
-          state.map((c) => (c._id === card._id ? newCard : c))
+          state.map((c) => (c._id === card._id ? newCard.data : c))
         ); // Необходимо дополнительно разобраться с конструкцией коллбэков
       })
       .catch((err) => {
@@ -142,7 +127,9 @@ function App() {
     function makeRequest() {
       return api
         .setUserInfo({ username: newName, userInfo: newDescription })
-        .then(setCurrentUser);
+        .then((res) => {
+          setCurrentUser(res.data)
+        });
     }
 
     handleSubmit(makeRequest);
@@ -150,7 +137,11 @@ function App() {
 
   function handleUpdateAvatar({ newAvatar }) {
     function makeRequest() {
-      return api.setUserAvatar({ avatar: newAvatar }).then(setCurrentUser);
+      return api
+        .setUserAvatar({ avatar: newAvatar })
+        .then((res) => {
+          setCurrentUser(res.data)
+        });
     }
 
     handleSubmit(makeRequest);
@@ -158,23 +149,39 @@ function App() {
 
   function handleAddPlaceSubmit({ link, placeName }) {
     function makeRequest() {
-      return api.addUserCard({ link: link, name: placeName }).then((res) => {
-        setCards([res, ...cards]);
+      return api.addUserCard({ link: link, name: placeName }).then((card) => {
+        setCards([card.data, ...cards]);
       });
     }
 
     handleSubmit(makeRequest);
   }
 
-  function handleLogInState() {
-    setLoggedIn(true);
-  }
-
   function handleLogOut() {
     setLoggedIn(false);
     localStorage.removeItem("jwt");
     localStorage.removeItem("email");
-    navigate("/sign-in", { replace: true });
+    navigate("/signin", { replace: true });
+  }
+
+  function handleLogIn(email, password) {
+    auth
+      .signIn(email, password)
+      .then((data) => {
+        localStorage.setItem('email', email);
+        setLoggedIn(true);
+
+        auth.checkToken(data)
+          .then((res) => {
+            handleLogIn();
+            navigate("/", { replace: true });
+            console.log(`checkToken returned id - ${res.data._id}`);
+          })
+          .catch(console.log);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
   }
 
   return (
@@ -199,7 +206,7 @@ function App() {
             }
           ></Route>
           <Route
-            path="/sign-up"
+            path="/signup"
             element={
               <Register
                 setRegisterPopupState={setIsRegistrationSuccessPopupOpen}
@@ -208,10 +215,10 @@ function App() {
             }
           />
           <Route
-            path="/sign-in"
-            element={<Login handleLogInState={handleLogInState} />}
+            path="/signin"
+            element={<Login handleLogIn={handleLogIn} />}
           ></Route>
-          <Route path="*" element={<Navigate to="/sign-in" replace />}></Route>
+          <Route path="*" element={<Navigate to="/signin" replace />}></Route>
         </Routes>
         <Footer />
       </div>
