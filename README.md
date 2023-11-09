@@ -29,7 +29,7 @@ https://www.figma.com/file/PSdQFRHoxXJFs2FH8IXViF/JavaScript-9-sprint?node-id=0%
 
 <a name="project-installation"><h2>2. Эксплуатация проекта</h2></a>
 
-1. git clone https://github.com/WoobotGJR/movies-explorer-frontend - клонировать репозиторий
+1. git clone https://github.com/WoobotGJR/react-mesto-auth - клонировать репозиторий
 2. npm i` - установить зависимости (dependencies)
 3. npm run start` - запустить приложение
 4. npm run build - создать build приложения
