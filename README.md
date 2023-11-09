@@ -27,6 +27,8 @@ https://www.figma.com/file/bjyvbKKJN2naO0ucURl2Z0/JavaScript.-Sprint-5?node-id=0
 https://www.figma.com/file/kRVLKwYG3d1HGLvh7JFWRT/JavaScript.-Sprint-6?node-id=0%3A1 
 https://www.figma.com/file/PSdQFRHoxXJFs2FH8IXViF/JavaScript-9-sprint?node-id=0%3A1
 
+<i>Проект был проверен опытными ревьюерами согласно чеклисту</i>
+
 <a name="project-installation"><h2>2. Эксплуатация проекта</h2></a>
 
 1. git clone https://github.com/WoobotGJR/react-mesto-auth - клонировать репозиторий
